@@ -1,0 +1,43 @@
+<<login by root user and create files like this:>>
+
+1. create files as fllow:
+
+#cat /etc/init.d/orashutdownd
+#!/bin/sh
+su - oracle -c "lsnrctl stop"
+su - oracle -c "sqlplus /nolog @/export/home/oracle/dbshutdown.sql"
+
+#cat /etc/init.d/orastartd
+#!/bin/sh
+su - oracle -c "lsnrctl start"
+su - oracle -c "sqlplus /nolog @/export/home/oracle/dbstart.sql"
+
+#cat /export/home/oracle/dbshutdown.sql
+conn / as sysdba
+shutdown immediate
+exit
+
+#cat /export/home/oracle/dbstart.sql
+conn / as sysdba
+startup
+exit
+
+2.configure auto task for this:when os shutdown then auto shutdown oracle database;when os restart then auto restart oracle database.
+//******************todo for rc0 rc6
+
+
+
+3. references
+Solaris[edit]
+Starting from Solaris 10, SMF (Service Management Facility) is used instead of SVR4 run levels. The latter are emulated to preserve compatibility with legacy startup scripts.[5]
+
+Solaris runlevels
+ID	Description
+0	Operating system halted; (SPARC only) drop to OpenBoot prompt
+S	Single-user mode with only root filesystem mounted (as read-only) -- Solaris 10+: svc:/milestone/single-user
+1	Single-user mode with all local filesystems mounted (read-write)
+2	Multi-user mode with most daemons started ¨C Solaris 10+: svc:/milestone/multi-user
+3	Multi-user mode; identical to 2 (runlevel 3 runs both /sbin/rc2 and /sbin/rc3), with filesystems exported, plus some other network services started. -- Solaris 10+: svc:/milestone/multi-user-server
+4	Alternative Multi-user mode, User-definable
+5	Shut down, power-off if hardware supports it
+6	Reboot
