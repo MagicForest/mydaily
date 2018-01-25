@@ -41,3 +41,4 @@ S	Single-user mode with only root filesystem mounted (as read-only) -- Solaris 1
 4	Alternative Multi-user mode, User-definable
 5	Shut down, power-off if hardware supports it
 6	Reboot
+https://en.wikipedia.org/wiki/Runlevel
